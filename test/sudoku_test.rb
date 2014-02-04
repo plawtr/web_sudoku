@@ -1,7 +1,7 @@
 require_relative '../lib/sudoku'
 require_relative '../lib/cell'
 require 'minitest/autorun'
-#require 'ruby-debug'
+require 'ruby-debug'
 
 class SudokuTest < Minitest::Unit::TestCase
 
