@@ -4,11 +4,11 @@ require 'rack-flash'
 
 require_relative './lib/sudoku'
 require_relative './lib/cell'
-
+require_relative './helpers/application'
 
 set :partial_template_engine, :erb
-
 enable :sessions
+set :session_secret, "Sudoku sucks!!!"
 
 use Rack::Flash
 
@@ -21,7 +21,8 @@ end
 
 def puzzle(sudoku)
 	some_empties = sudoku.dup
-	while some_empties.count("0")<23  
+	ddifficulty = @difficulty == 'high' ? 45 : 23 
+	while some_empties.count("0")<ddifficulty  
 		some_empties[rand(80)] = "0"
 	end
 	some_empties
@@ -64,9 +65,9 @@ get '/' do
 	@solution = session[:solution]
 	@puzzle = session[:puzzle]	
 
-	puts @current_solution.inspect
-	puts @solution.inspect
-	puts @puzzle.inspect
+	# puts @current_solution.inspect
+	# puts @solution.inspect
+	# puts @puzzle.inspect
 
 	erb :index
 end
@@ -74,41 +75,21 @@ end
 post '/' do
 	cells = params["cell"]
 	session[:current_solution] = box_order_to_row_order(cells).map{|value| value.to_i}.join
-	session[:check_solution] = true
+	session[:check_solution] = !params["Save"]
 	redirect to("/")
 end
-
 
 get '/solution' do
 	@current_solution = session[:solution] 
 	erb :index
 end
 
-helpers do 
-	def colour_class(solution_to_check, puzzle_value, current_solution_value, solution_value)
-		# puts solution_to_check
-		# puts puzzle_value
-		# puts current_solution_value
-		# puts solution_value
-
-
-		must_be_guessed = (puzzle_value == "0")
-		tried_to_guess = (current_solution_value.to_i != 0)
-		guessed_incorrectly = (current_solution_value != solution_value)
-
-		if solution_to_check &&
-			must_be_guessed &&
-			tried_to_guess &&
-			guessed_incorrectly
-			'incorrect'
-		elsif !must_be_guessed
-			'value-provided'
-		end	
-	end
-
-	def cell_value(value)
-		value.to_i == 0 ? '' : value
-	end
-
+get '/new-game' do
+	puts params
+	@difficulty = params[:difficulty]
+	session[:current_solution] = nil
+	redirect to("/")
 end
+
+
 

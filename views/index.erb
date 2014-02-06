@@ -1,14 +1,5 @@
-<html>
-<head>
-	<title>Web Sudoku Solver</title>
-	<link href="/stylesheets/application.css" rel="stylesheet" type="text/css">
-</head>
-<body>
 
 <h1>Life is too short for playing Sudoku</h1>
-
-
-
 <div id="sudoku">
 	<form action="/" method="post">
 		<% 3.times do |row| %>
@@ -26,11 +17,24 @@
 				<% end %>
 			</div>
 		<% end %>
-		<button>Check solution</button>
+	</div>
+	<div>
+		<button name="Check">Check solution</button>
+		<button name="Save">Save Game</button>
 	</form>	
+
+	<form action="/new-game?difficulty=low" method="get">
+		<button>New Easy Game</button>
+	</form>
+
+	<form action="/new-game?difficulty=high" method="get">
+		<button>New Hard Game</button>
+	</form>
+	<form action="/solution" method="get">
+		<button>Solution</button>
+	</form>
 </div>
+	
 <div id="flash">
 	<%= flash[:notice] %>
 </div>
-</body>
-</html>
