@@ -84,7 +84,7 @@ get '/solution' do
 	erb :index
 end
 
-get '/new-game' do
+post '/new-game' do
 	puts params
 	@difficulty = params[:difficulty]
 	session[:current_solution] = nil
