@@ -25,8 +25,7 @@ end
 
 def puzzle(sudoku)
 	some_empties = sudoku.dup
-	ddifficulty = @difficulty == 'high' ? 45 : 23 
-	while some_empties.count("0")<ddifficulty  
+	while some_empties.count("0")<session[:difficulty]   
 		some_empties[rand(80)] = "0"
 	end
 	some_empties
@@ -68,11 +67,6 @@ get '/' do
 	@current_solution = session[:current_solution] || session[:puzzle]
 	@solution = session[:solution]
 	@puzzle = session[:puzzle]	
-
-	# puts @current_solution.inspect
-	# puts @solution.inspect
-	# puts @puzzle.inspect
-
 	erb :index
 end
 
@@ -89,8 +83,7 @@ get '/solution' do
 end
 
 post '/new-game' do
-	puts params
-	@difficulty = params[:difficulty]
+	session[:difficulty] = params[:difficulty].to_i
 	session[:current_solution] = nil
 	redirect to("/")
 end
