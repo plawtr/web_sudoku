@@ -6,6 +6,10 @@ require_relative './lib/sudoku'
 require_relative './lib/cell'
 require_relative './helpers/application'
 
+configure :production do
+  require 'newrelic_rpm'
+end
+
 set :partial_template_engine, :erb
 enable :sessions
 set :session_secret, "Sudoku sucks!!!"
