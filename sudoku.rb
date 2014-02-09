@@ -25,6 +25,7 @@ end
 
 def puzzle(sudoku)
 	some_empties = sudoku.dup
+	session[:difficulty] = 30 if session[:difficulty].nil?
 	while some_empties.count("0")<session[:difficulty]   
 		some_empties[rand(80)] = "0"
 	end
